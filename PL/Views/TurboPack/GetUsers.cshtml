@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "GetUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row" style="display: flex; justify-content: center; align-items: center;">
+        <div class="col-md-8">
+            <H1 class="text-center">Consumo de Servicios Web (Json)</H1>
+        </div>
+
+    </div>
+    <br />
+    <div class="row" style="display: flex; justify-content: center; align-items: center;">
+        <div class="col-md-3"><button class="btn btn-info" onclick="GenerarLinea()">Enlistar Siguiente Usuario</button></div>
+        <div class="col-md-3"><button class="btn btn-warning" onclick="LimpiarTabla()">Limpiar Tabla</button></div>
+
+    </div>
+    <br />
+    <div class="row" style="display: flex; justify-content: center; align-items: center;">
+        <div class="col-md-10">
+
+            <table id="tblGetUser" class="table table-striped table-hover text-center">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Nombre
+                        </th>
+                        <th class="text-center">
+                            Correo
+                        </th>
+                        <th class="text-center">
+                            Direccción
+                        </th>
+                        <th class="text-center">
+                            Genero
+                        </th class="text-center">
+                        <th class="text-center">
+                           Foto
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="tBody">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function GenerarLinea() {
+        $.ajax({
+            type: 'GET',
+            url: 'https://randomuser.me/api/',
+            dataType: 'json',
+            success: function (result) {
+
+                var array = result.results;
+
+                var htmlTags = '<tr>' +
+                    '<td>' + array[0].name.first + '</td>' +
+                    '<td>' + array[0].email + '</td>' +
+                    '<td>' + array[0].location.city + '</td>' +
+                    '<td>' + array[0].gender + '</td>' +
+                    /*'<td>' + array[0].picture.large + '</td>' +*/
+                    '<td>' + '<img src="' + array[0].picture.large + '" style="height:50px;width:50px;" />' + '</td>' +
+                    '</tr>';
+
+                $('#tblGetUser tbody').append(htmlTags);
+
+
+
+            },
+            error: function (ex) {
+                alert('Failed' + ex);
+            }
+
+        });
+
+       
+
+    }
+     function LimpiarTabla() {
+            $('#tblGetUser tbody').empty();
+
+        }
+
+</script>
